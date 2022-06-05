@@ -1,4 +1,6 @@
-use super::player::PlayerId;
+use std::ops::{Add, Mul, Sub};
+
+use super::{player::PlayerId, Game};
 
 pub enum CardType {
     UtilCard {
@@ -7,16 +9,12 @@ pub enum CardType {
     },
     ColoredCard {
         color: Color,
-        house_1: Money,
-        house_2: Money,
-        house_3: Money,
-        house_4: Money,
-        hotel: Money,
+        house_rent: [Money; 5],
         house_cost: Money,
     },
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Color {
     Brown,
     Blue,
@@ -26,6 +24,20 @@ pub enum Color {
     Yellow,
     Green,
     Cyan,
+}
+
+impl Color {
+    pub fn max_cards(&self) -> usize {
+        match self {
+            Color::Brown
+            | Color::Blue
+            | Color::Pink
+            | Color::Orange
+            | Color::Red
+            | Color::Yellow => 2,
+            Color::Green | Color::Cyan => 3,
+        }
+    }
 }
 
 pub struct Card {
@@ -48,44 +60,67 @@ impl Card {
 #[derive(Clone, Copy)]
 pub struct Money(pub u32);
 
-pub enum Houses {
-    None,
-    One,
-    Two,
-    Three,
-    Four,
-    Hotel,
+impl Add for Money {
+    type Output = Money;
+
+    fn add(self, other: Money) -> Money {
+        Money(self.0 + other.0)
+    }
+}
+
+impl Sub for Money {
+    type Output = Money;
+
+    fn sub(self, other: Money) -> Money {
+        Money(self.0 - other.0)
+    }
+}
+
+impl Mul<u32> for Money {
+    type Output = Money;
+
+    fn mul(self, other: u32) -> Money {
+        Money(self.0 * other)
+    }
 }
 
 pub struct Property {
     pub card: Card,
-    pub houses: Option<Houses>,
+    pub houses: Option<usize>,
     pub owner: Option<PlayerId>,
     pub mortgaged: bool,
 }
 
 impl Property {
-    pub fn rent(&self) -> Money {
-        match self.card.card_type {
+    pub fn rent(&self, game: &Game) -> Option<Money> {
+        if self.mortgaged {
+            return None;
+        }
+
+        let owner = game.get_player_by_id(self.owner?).unwrap();
+
+        Some(match self.card.card_type {
             CardType::ColoredCard {
-                house_1,
-                house_2,
-                house_3,
-                house_4,
-                hotel,
-                ..
+                house_rent, color, ..
             } => {
-                let rent = match self.houses {
-                    None | Some(Houses::None) => self.card.rent,
-                    Some(Houses::One) => house_1,
-                    Some(Houses::Two) => house_2,
-                    Some(Houses::Three) => house_3,
-                    Some(Houses::Four) => house_4,
-                    Some(Houses::Hotel) => hotel,
-                };
-                rent
+                let houses = self.houses.unwrap();
+                if houses == 0 {
+                    let group_cards_owned = owner
+                        .property
+                        .iter()
+                        .filter(|p| p.card.color() == Some(color))
+                        .count();
+
+                    if group_cards_owned == color.max_cards() {
+                        house_rent[0] * 2
+                    } else {
+                        house_rent[0]
+                    }
+                } else {
+                    house_rent[houses]
+                }
             }
             CardType::UtilCard { .. } => self.card.rent,
-        }
+        })
     }
 }

@@ -1,4 +1,4 @@
-use super::property::{Property, Money};
+use super::property::{Money, Property};
 
 pub type TileNumber = u32;
 
@@ -23,8 +23,17 @@ pub struct Board {
 impl Board {
     pub const JAIL: TileNumber = 10;
     pub const GO: TileNumber = 0;
+
+    pub fn new() -> Self {
+        todo!()
+    }
 }
 
+impl Default for Board {
+    fn default() -> Self {
+        Self::new()
+    }
+}
 
 pub struct SpecialCard {
     pub body: &'static str,
