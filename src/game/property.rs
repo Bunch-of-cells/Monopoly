@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, AddAssign, Mul, Sub, SubAssign};
 
 use super::{player::PlayerId, Game};
 
@@ -68,11 +68,23 @@ impl Add for Money {
     }
 }
 
+impl AddAssign for Money {
+    fn add_assign(&mut self, other: Money) {
+        self.0 += other.0;
+    }
+}
+
 impl Sub for Money {
     type Output = Money;
 
     fn sub(self, other: Money) -> Money {
         Money(self.0 - other.0)
+    }
+}
+
+impl SubAssign for Money {
+    fn sub_assign(&mut self, other: Money) {
+        self.0 -= other.0;
     }
 }
 
@@ -94,6 +106,10 @@ pub struct Property {
 impl Property {
     pub fn rent(&self, game: &Game) -> Option<Money> {
         if self.mortgaged {
+            return None;
+        }
+
+        if self.owner == game.turn {
             return None;
         }
 

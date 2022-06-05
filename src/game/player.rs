@@ -24,7 +24,7 @@ impl Player {
             property: Vec::new(),
             money: Money(1500),
             debt: Money(0),
-            tile: Board::GO,
+            tile: Board::GO_TILE,
             in_jail: false,
         }
     }

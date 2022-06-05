@@ -2,8 +2,10 @@ pub mod board;
 pub mod player;
 pub mod property;
 
-use board::Board;
+use board::{Board, Tile};
 use player::{NewPlayer, Player, PlayerId};
+use property::Money;
+use rand::Rng;
 
 pub struct Game {
     players: Vec<Player>,
@@ -12,6 +14,10 @@ pub struct Game {
 }
 
 impl Game {
+    pub const GO: Money = Money(200);
+    pub const SUPER_TAX: Money = Money(100);
+    pub const INCOME_TAX: Money = Money(200);
+
     pub fn new() -> Game {
         Game {
             players: Vec::new(),
@@ -35,6 +41,38 @@ impl Game {
 
     pub fn get_player_by_id(&self, id: PlayerId) -> Option<&Player> {
         self.players.iter().find(|p| p.id == id)
+    }
+
+    pub fn step(&mut self) {
+        let player_id = self.turn.expect("No player in the game");
+        let player = self.players.iter_mut().find(|p| p.id == player_id).unwrap();
+        let mut dice = rand::thread_rng();
+        let dice_roll = dice.gen_range(1..=6);
+        let old = player.tile;
+        player.tile = (player.tile + dice_roll) % Board::TOTAL_TILES;
+        if player.tile < old {
+            player.money += Self::GO;
+        }
+        match &self.board.tiles[player.tile as usize] {
+            Tile::Property(p) => {
+                if let Some(rent) = p.rent(self) {
+                    self.players
+                        .iter_mut()
+                        .find(|p| p.id == player_id)
+                        .unwrap()
+                        .money -= rent;
+                }
+            }
+            Tile::GoToJail => {
+                player.tile = Board::JAIL_TILE;
+                player.in_jail = true;
+            },
+            Tile::Chance => todo!(),
+            Tile::CommunityChest => todo!(),
+            Tile::IncomeTax => player.money -= Self::INCOME_TAX,
+            Tile::SuperTax => player.money -= Self::SUPER_TAX,
+            Tile::FreeParking | Tile::Go | Tile::Jail => (),
+        }
     }
 }
 

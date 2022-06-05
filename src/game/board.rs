@@ -21,8 +21,9 @@ pub struct Board {
 }
 
 impl Board {
-    pub const JAIL: TileNumber = 10;
-    pub const GO: TileNumber = 0;
+    pub const JAIL_TILE: TileNumber = 10;
+    pub const GO_TILE: TileNumber = 0;
+    pub const TOTAL_TILES: u32 = 40;
 
     pub fn new() -> Self {
         todo!()
