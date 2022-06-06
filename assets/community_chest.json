@@ -1,0 +1,138 @@
+[
+    {
+        "body": "Advance to \"Go\". Collect $200.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Bank error in your favor. Collect $200.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Doctor's fees. Pay $50.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "From sale of stock you get $50.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Get Out of Jail Free. This card may be kept until needed or sold/traded.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Go to Jail. Go directly to jail. Do not pass Go, Do not collect $200.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Grand Opera Night. Collect $50 from every player for opening night seats.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Holiday Fund matures. Receive $100.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Income tax refund. Collect $20.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "It is your birthday. Collect $10 from every player.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Life insurance matures. Collect $100",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Hospital Fees. Pay $50.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "School fees. Pay $50.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "Receive $25 consultancy fee.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "You are assessed for street repairs: Pay $40 per house and $115 per hotel you own.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "You have won second prize in a beauty contest. Collect $10.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    },
+    {
+        "body": "You inherit $100.",
+        "action": [
+            {
+                "type": ""
+            }
+        ]
+    }
+]
